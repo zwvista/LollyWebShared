@@ -28,10 +28,10 @@ export class PatternService extends BaseService {
     return result.records.map(value => Object.assign(new MPattern(), value));
   }
 
-  async create(item: MPattern): Promise<number | any[]> {
+  async create(item: MPattern): Promise<number> {
     const url = `${this.baseUrlAPI}PATTERNS`;
-    (item as any).ID = null;
-    return await this.httpPost<number | any[]>(url, item);
+    const payload: any = { ...item, ID: null };
+    return await this.httpPost<number>(url, payload);
   }
 
   async update(item: MPattern): Promise<number> {

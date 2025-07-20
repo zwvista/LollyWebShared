@@ -12,10 +12,10 @@ export class WordFamiService extends BaseService {
     return result.records.map(value => Object.assign(new MWordFami(), value));
   }
 
-  private async create(item: MWordFami): Promise<number | any[]> {
+  private async create(item: MWordFami): Promise<number> {
     const url = `${this.baseUrlAPI}WORDSFAMI`;
-    (item as any).ID = null;
-    return await this.httpPost<number | any[]>(url, item);
+    const payload: any = { ...item, ID: null };
+    return await this.httpPost<number>(url, payload);
   }
 
   private async update(item: MWordFami): Promise<number> {

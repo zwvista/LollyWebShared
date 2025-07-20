@@ -53,7 +53,7 @@ export class UnitPhraseService extends BaseService {
     return result.records.map(value => Object.assign(new MUnitPhrase(), value));
   }
 
-  async create(item: MUnitPhrase): Promise<number | any[]> {
+  async create(item: MUnitPhrase): Promise<number> {
     const url = `${this.baseUrlSP}UNITPHRASES_CREATE`;
     const result = await this.httpPost<MSPResult[][] | any[]>(url, toParameters(item));
     return result[0][0].NEW_ID;

@@ -53,7 +53,7 @@ export class UnitWordService extends BaseService {
     return result.records.map(value => Object.assign(new MUnitWord(), value));
   }
 
-  async create(item: MUnitWord): Promise<number | any[]> {
+  async create(item: MUnitWord): Promise<number> {
     const url = `${this.baseUrlSP}UNITWORDS_CREATE`;
     const result = await this.httpPost<MSPResult[][] | any[]>(url, toParameters(item));
     return result[0][0].NEW_ID;

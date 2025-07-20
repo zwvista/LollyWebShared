@@ -33,7 +33,7 @@ export class PhrasesUnitService {
     this.textbookPhraseCount = res.results;
   }
 
-  async create(item: MUnitPhrase): Promise<number | any[]> {
+  async create(item: MUnitPhrase): Promise<number> {
     return await this.unitPhraseService.create(item);
   }
 

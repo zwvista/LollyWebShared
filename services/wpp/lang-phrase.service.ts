@@ -36,10 +36,10 @@ export class LangPhraseService extends BaseService {
     return result.records.map(value => Object.assign(new MLangPhrase(), value));
   }
 
-  async create(item: MLangPhrase): Promise<number | any[]> {
+  async create(item: MLangPhrase): Promise<number> {
     const url = `${this.baseUrlAPI}LANGPHRASES`;
-    (item as any).ID = null;
-    return await this.httpPost<number | any[]>(url, item);
+    const payload: any = { ...item, ID: null };
+    return await this.httpPost<number>(url, payload);
   }
 
   async update(item: MLangPhrase): Promise<number> {

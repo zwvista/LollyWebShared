@@ -22,7 +22,7 @@ export class PatternsService {
     this.patternCount = res.results;
   }
 
-  async create(item: MPattern): Promise<number | any[]> {
+  async create(item: MPattern): Promise<number> {
     return await this.patternService.create(item);
   }
 

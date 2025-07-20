@@ -36,10 +36,10 @@ export class LangWordService extends BaseService {
     return result.records.map(value => Object.assign(new MLangWord(), value));
   }
 
-  async create(item: MLangWord): Promise<number | any[]> {
+  async create(item: MLangWord): Promise<number> {
     const url = `${this.baseUrlAPI}LANGWORDS`;
-    (item as any).ID = null;
-    return await this.httpPost<number | any[]>(url, item);
+    const payload: any = { ...item, ID: null };
+    return await this.httpPost<number>(url, payload);
   }
 
   async update(item: MLangWord): Promise<number> {

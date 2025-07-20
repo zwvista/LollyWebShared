@@ -33,7 +33,7 @@ export class WordsUnitService {
     this.textbookWordCount = res.results;
   }
 
-  async create(item: MUnitWord): Promise<number | any[]> {
+  async create(item: MUnitWord): Promise<number> {
     return await this.unitWordService.create(item);
   }
 

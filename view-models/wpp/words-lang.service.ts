@@ -25,7 +25,7 @@ export class WordsLangService {
     this.langWordsCount = res.results;
   }
 
-  async create(item: MLangWord): Promise<number | any[]> {
+  async create(item: MLangWord): Promise<number> {
     return await this.langWordService.create(item);
   }
 

@@ -22,7 +22,7 @@ export class PhrasesLangService {
     this.langPhraseCount = res.results;
   }
 
-  async create(item: MLangPhrase): Promise<number | any[]> {
+  async create(item: MLangPhrase): Promise<number> {
     return await this.langPhraseService.create(item);
   }
 
