@@ -1,4 +1,4 @@
-import { MSelectItem } from '../../models/misc/selectitem';
+import { MSelectItem } from '../../common/selectitem';
 
 export interface MTextbooks {
   records: MTextbook[];

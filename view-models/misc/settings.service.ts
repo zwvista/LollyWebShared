@@ -9,7 +9,7 @@ import { DictionaryService } from '../../services/misc/dictionary.service';
 import { TextbookService } from '../../services/misc/textbook.service';
 import { autoCorrect, MAutoCorrect } from '../../models/misc/autocorrect';
 import { AutoCorrectService } from '../../services/misc/autocorrect.service';
-import { MSelectItem } from '../../models/misc/selectitem';
+import { MSelectItem } from '../../common/selectitem';
 // @ts-ignore
 import * as Speech from 'speak-tts';
 import { VoiceService } from '../../services/misc/voice.service';
