@@ -4,7 +4,7 @@ import { singleton } from 'tsyringe';
 @singleton()
 export class AppService {
 
-  private isInitialized = false;
+  isInitialized = false;
   private initPromise: Promise<void> | null = null;
 
   constructor(private settingsService: SettingsService) {
