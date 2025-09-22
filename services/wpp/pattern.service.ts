@@ -1,7 +1,5 @@
 import { BaseService } from '../misc/base.service';
 import { MPattern, MPatterns } from '../../models/wpp/pattern';
-import { MSPResult } from '../../common/sp-result';
-import { toParameters } from '../../common/common';
 import { singleton } from 'tsyringe';
 
 @singleton()
@@ -42,17 +40,5 @@ export class PatternService extends BaseService {
   async delete(id: number): Promise<number> {
     const url = `${this.baseUrlAPI}PATTERNS/${id}`;
     return await this.httpDelete(url);
-  }
-
-  async mergePatterns(item: MPattern): Promise<string> {
-    const url = `${this.baseUrlSP}PATTERNS_MERGE`;
-    const result = await this.httpPost<MSPResult[][]>(url, toParameters(item));
-    return result[0][0].result;
-  }
-
-  async splitPattern(item: MPattern): Promise<string> {
-    const url = `${this.baseUrlSP}PATTERNS_SPLIT`;
-    const result = await this.httpPost<MSPResult[][]>(url, toParameters(item));
-    return result[0][0].result;
   }
 }
