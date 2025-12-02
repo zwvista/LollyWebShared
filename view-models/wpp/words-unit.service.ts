@@ -12,6 +12,9 @@ export class WordsUnitService {
 
   textbookWords: MUnitWord[] = [];
   textbookWordCount = 0;
+  newWord = '';
+  filter = '';
+  filterType = 0;
 
   constructor(private unitWordService: UnitWordService,
               private langWordService: LangWordService,
@@ -19,18 +22,28 @@ export class WordsUnitService {
               private appService: AppService) {
   }
 
-  async getDataInTextbook(filter: string, filterType: number): Promise<void> {
+  async getDataInTextbook(): Promise<void> {
     await this.appService.getData();
     this.unitWords = await this.unitWordService.getDataByTextbookUnitPart(this.settingsService.selectedTextbook,
-        this.settingsService.USUNITPARTFROM, this.settingsService.USUNITPARTTO, filter, filterType);
+        this.settingsService.USUNITPARTFROM, this.settingsService.USUNITPARTTO, this.filter, this.filterType);
   }
 
-  async getDataInLang(page: number, rows: number, filter: string, filterType: number, textbookFilter: number) {
+  async getDataInLang(page: number, rows: number, textbookFilter: number) {
     await this.appService.getData();
     const res = await this.unitWordService.getDataByLang(this.settingsService.selectedLang.ID,
-        this.settingsService.textbooks, filter, filterType, textbookFilter, page, rows);
+        this.settingsService.textbooks, this.filter, this.filterType, textbookFilter, page, rows);
     this.textbookWords = res.records;
     this.textbookWordCount = res.results;
+  }
+
+  async createWithNewWord(): Promise<void> {
+    if (!this.newWord) return;
+    const o = this.newUnitWord();
+    o.WORD = this.settingsService.autoCorrectInput(this.newWord);
+    this.newWord = '';
+    const id = await this.create(o);
+    o.ID = id as number;
+    this.unitWords.push(o);
   }
 
   async create(item: MUnitWord): Promise<number> {

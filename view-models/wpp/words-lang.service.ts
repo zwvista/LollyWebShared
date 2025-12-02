@@ -4,13 +4,14 @@ import { LangWordService } from '../../services/wpp/lang-word.service';
 import { MLangWord } from '../../models/wpp/lang-word';
 import { WordFamiService } from '../../services/wpp/word-fami.service';
 import { singleton } from 'tsyringe';
-import { MUnitWord } from "../../models/wpp/unit-word";
 
 @singleton()
 export class WordsLangService {
 
   langWords: MLangWord[] = [];
   langWordsCount = 0;
+  filter = '';
+  filterType = 0;
 
   constructor(private langWordService: LangWordService,
               private wordFamiService: WordFamiService,
@@ -18,9 +19,9 @@ export class WordsLangService {
               private appService: AppService) {
   }
 
-  async getData(page: number, rows: number, filter: string, filterType: number): Promise<void> {
+  async getData(page: number, rows: number): Promise<void> {
     await this.appService.getData();
-    const res =　await this.langWordService.getDataByLang(this.settingsService.selectedLang.ID, filter, filterType, page, rows);
+    const res =　await this.langWordService.getDataByLang(this.settingsService.selectedLang.ID, this.filter, this.filterType, page, rows);
     this.langWords = res.records;
     this.langWordsCount = res.results;
   }
