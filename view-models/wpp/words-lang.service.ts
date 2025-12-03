@@ -12,6 +12,8 @@ export class WordsLangService {
   langWordsCount = 0;
   filter = '';
   filterType = 0;
+  page = 1;
+  rows = 0;
 
   constructor(private langWordService: LangWordService,
               private wordFamiService: WordFamiService,
@@ -19,9 +21,9 @@ export class WordsLangService {
               private appService: AppService) {
   }
 
-  async getData(page: number, rows: number): Promise<void> {
+  async getData(): Promise<void> {
     await this.appService.getData();
-    const res =　await this.langWordService.getDataByLang(this.settingsService.selectedLang.ID, this.filter, this.filterType, page, rows);
+    const res =　await this.langWordService.getDataByLang(this.settingsService.selectedLang.ID, this.filter, this.filterType, this.page, this.rows);
     this.langWords = res.records;
     this.langWordsCount = res.results;
   }
@@ -60,7 +62,7 @@ export class WordsLangService {
 
   async clearNoteByIndex(index: number) {
     const item = this.langWords[index];
-    this.clearNote(item)
+    await this.clearNote(item);
   }
 
   async clearNote(item: MLangWord) {

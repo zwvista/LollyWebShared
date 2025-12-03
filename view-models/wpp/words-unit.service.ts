@@ -15,6 +15,10 @@ export class WordsUnitService {
   newWord = '';
   filter = '';
   filterType = 0;
+  textbookFilter = 0;
+  page = 1;
+  rows = 0;
+  ifEmpty = true;
 
   constructor(private unitWordService: UnitWordService,
               private langWordService: LangWordService,
@@ -28,10 +32,10 @@ export class WordsUnitService {
         this.settingsService.USUNITPARTFROM, this.settingsService.USUNITPARTTO, this.filter, this.filterType);
   }
 
-  async getDataInLang(page: number, rows: number, textbookFilter: number) {
+  async getDataInLang() {
     await this.appService.getData();
     const res = await this.unitWordService.getDataByLang(this.settingsService.selectedLang.ID,
-        this.settingsService.textbooks, this.filter, this.filterType, textbookFilter, page, rows);
+        this.settingsService.textbooks, this.filter, this.filterType, this.textbookFilter, this.page, this.rows);
     this.textbookWords = res.records;
     this.textbookWordCount = res.results;
   }
@@ -99,16 +103,16 @@ export class WordsUnitService {
     await this.updateNote(item.WORDID, item.NOTE);
   }
 
-  getNotes(ifEmpty: boolean, oneComplete: (index: number) => void, allComplete: () => void) {
+  getNotes(oneComplete: (index: number) => void, allComplete: () => void) {
     this.settingsService.getNotes(this.unitWords.length,
-      i => !ifEmpty || !this.unitWords[i],
+      i => !this.ifEmpty || !this.unitWords[i],
       async i => { await this.getNoteByIndex(i); oneComplete(i);
       }, allComplete);
   }
 
   async clearNoteByIndex(index: number) {
     const item = this.unitWords[index];
-    this.clearNote(item)
+    await this.clearNote(item);
   }
 
   async clearNote(item: MUnitWord) {
@@ -116,9 +120,9 @@ export class WordsUnitService {
     await this.updateNote(item.WORDID, item.NOTE);
   }
 
-  clearNotes(ifEmpty: boolean, oneComplete: (index: number) => void, allComplete: () => void) {
+  clearNotes(oneComplete: (index: number) => void, allComplete: () => void) {
     this.settingsService.clearNotes(this.unitWords.length,
-      i => !ifEmpty || !this.unitWords[i],
+      i => !this.ifEmpty || !this.unitWords[i],
       async i => { await this.clearNoteByIndex(i); oneComplete(i);
       }, allComplete);
   }

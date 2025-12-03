@@ -12,6 +12,11 @@ export class PhrasesUnitService {
 
   textbookPhrases: MUnitPhrase[] = [];
   textbookPhraseCount = 0;
+  filter = '';
+  filterType = 0;
+  textbookFilter = 0;
+  page = 1;
+  rows = 0;
 
   constructor(private unitPhraseService: UnitPhraseService,
               private langPhraseService: LangPhraseService,
@@ -19,16 +24,16 @@ export class PhrasesUnitService {
               private appService: AppService) {
   }
 
-  async getDataInTextbook(filter: string, filterType: number) {
+  async getDataInTextbook() {
     await this.appService.getData();
     this.unitPhrases = await this.unitPhraseService.getDataByTextbookUnitPart(this.settingsService.selectedTextbook,
-        this.settingsService.USUNITPARTFROM, this.settingsService.USUNITPARTTO, filter, filterType);
+        this.settingsService.USUNITPARTFROM, this.settingsService.USUNITPARTTO, this.filter, this.filterType);
   }
 
-  async getDataInLang(page: number, rows: number, filter: string, filterType: number, textbookFilter: number) {
+  async getDataInLang() {
     await this.appService.getData();
     const res = await this.unitPhraseService.getDataByLang(this.settingsService.selectedLang.ID,
-        this.settingsService.textbooks, filter, filterType, textbookFilter, page, rows);
+        this.settingsService.textbooks, this.filter, this.filterType, this.textbookFilter, this.page, this.rows);
     this.textbookPhrases = res.records;
     this.textbookPhraseCount = res.results;
   }

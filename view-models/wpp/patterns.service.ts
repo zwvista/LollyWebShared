@@ -9,15 +9,19 @@ export class PatternsService {
 
   patterns: MPattern[] = [];
   patternCount = 0;
+  filter = '';
+  filterType = 0;
+  page = 1;
+  rows = 0;
 
   constructor(private patternService: PatternService,
               private settingsService: SettingsService,
               private appService: AppService) {
   }
 
-  async getData(page: number, rows: number, filter: string, filterType: number) {
+  async getData() {
     await this.appService.getData();
-    const res = await this.patternService.getDataByLang(this.settingsService.selectedLang.ID, filter, filterType, page, rows);
+    const res = await this.patternService.getDataByLang(this.settingsService.selectedLang.ID, this.filter, this.filterType, this.page, this.rows);
     this.patterns = res.records;
     this.patternCount = res.results;
   }
