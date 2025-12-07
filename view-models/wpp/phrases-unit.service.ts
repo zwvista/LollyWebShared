@@ -13,7 +13,8 @@ export class PhrasesUnitService {
   textbookPhrases: MUnitPhrase[] = [];
   textbookPhraseCount = 0;
   filter = '';
-  filterType = 0;
+  filterScope = SettingsService.scopePhraseFilters[0];
+  scopeFilters = SettingsService.scopePhraseFilters;
   textbookFilter = 0;
   page = 1;
   rows = 0;
@@ -27,13 +28,13 @@ export class PhrasesUnitService {
   async getDataInTextbook() {
     await this.appService.getData();
     this.unitPhrases = await this.unitPhraseService.getDataByTextbookUnitPart(this.settingsService.selectedTextbook,
-        this.settingsService.USUNITPARTFROM, this.settingsService.USUNITPARTTO, this.filter, this.filterType);
+        this.settingsService.USUNITPARTFROM, this.settingsService.USUNITPARTTO, this.filter, this.filterScope);
   }
 
   async getDataInLang() {
     await this.appService.getData();
     const res = await this.unitPhraseService.getDataByLang(this.settingsService.selectedLang.ID,
-        this.settingsService.textbooks, this.filter, this.filterType, this.textbookFilter, this.page, this.rows);
+        this.settingsService.textbooks, this.filter, this.filterScope, this.textbookFilter, this.page, this.rows);
     this.textbookPhrases = res.records;
     this.textbookPhraseCount = res.results;
   }

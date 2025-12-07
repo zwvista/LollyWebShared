@@ -5,12 +5,12 @@ import { singleton } from 'tsyringe';
 @singleton()
 export class PatternService extends BaseService {
 
-  async getDataByLang(langid: number, filter: string, filterType: number): Promise<MPatterns>;
-  async getDataByLang(langid: number, filter: string, filterType: number, page: number, rows: number): Promise<MPatterns>;
-  async getDataByLang(langid: number, filter: string, filterType: number, page?: number, rows?: number): Promise<MPatterns> {
+  async getDataByLang(langid: number, filter: string, filterScope: string): Promise<MPatterns>;
+  async getDataByLang(langid: number, filter: string, filterScope: string, page: number, rows: number): Promise<MPatterns>;
+  async getDataByLang(langid: number, filter: string, filterScope: string, page?: number, rows?: number): Promise<MPatterns> {
     let url = `${this.baseUrlAPI}PATTERNS?filter=LANGID,eq,${langid}&order=PATTERN`;
     if (filter)
-      url += `&filter=${filterType === 0 ? 'PATTERN' : filterType === 1 ? 'NOTE' : 'TAGS'},cs,${encodeURIComponent(filter)}`;
+      url += `&filter=${filterScope},cs,${encodeURIComponent(filter)}`;
     if (page !== undefined && rows !== undefined)
       url += `&page=${page},${rows}`;
     const result = await this.httpGet<MPatterns>(url);

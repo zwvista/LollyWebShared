@@ -7,12 +7,12 @@ import { singleton } from 'tsyringe';
 @singleton()
 export class LangWordService extends BaseService {
 
-  async getDataByLang(langid: number, filter: string, filterType: number): Promise<MLangWords>;
-  async getDataByLang(langid: number, filter: string, filterType: number, page: number, rows: number): Promise<MLangWords>;
-  async getDataByLang(langid: number, filter: string, filterType: number, page?: number, rows?: number): Promise<MLangWords> {
+  async getDataByLang(langid: number, filter: string, filterScope: string): Promise<MLangWords>;
+  async getDataByLang(langid: number, filter: string, filterScope: string, page: number, rows: number): Promise<MLangWords>;
+  async getDataByLang(langid: number, filter: string, filterScope: string, page?: number, rows?: number): Promise<MLangWords> {
     let url = `${this.baseUrlAPI}VLANGWORDS?filter=LANGID,eq,${langid}&order=WORD`;
     if (filter)
-      url += `&filter=${filterType === 0 ? 'WORD' : 'NOTE'},cs,${encodeURIComponent(filter)}`;
+      url += `&filter=${filterScope},cs,${encodeURIComponent(filter)}`;
     if (page !== undefined && rows !== undefined)
       url += `&page=${page},${rows}`;
     const result = await this.httpGet<MLangWords>(url);

@@ -8,10 +8,10 @@ import { singleton } from 'tsyringe';
 @singleton()
 export class UnitWordService extends BaseService {
 
-  async getDataByTextbookUnitPart(textbook: MTextbook, unitPartFrom: number, unitPartTo: number, filter: string, filterType: number): Promise<MUnitWord[]> {
+  async getDataByTextbookUnitPart(textbook: MTextbook, unitPartFrom: number, unitPartTo: number, filter: string, filterScope: string): Promise<MUnitWord[]> {
     let url = `${this.baseUrlAPI}VUNITWORDS?filter=TEXTBOOKID,eq,${textbook.ID}&filter=UNITPART,bt,${unitPartFrom},${unitPartTo}&order=UNITPART&order=SEQNUM`;
     if (filter)
-      url += `&filter=${filterType === 0 ? 'WORD' : 'NOTE'},cs,${encodeURIComponent(filter)}`;
+      url += `&filter=${filterScope},cs,${encodeURIComponent(filter)}`;
     const result = await this.httpGet<MUnitWords>(url);
     const result2 = result.records.map(value => Object.assign(new MUnitWord(), value));
     result2.forEach(o => o.textbook = textbook);
@@ -19,19 +19,19 @@ export class UnitWordService extends BaseService {
   }
 
   async getDataByTextbook(textbook: MTextbook): Promise<MUnitWord[]> {
-    let url = `${this.baseUrlAPI}VUNITWORDS?filter=TEXTBOOKID,eq,${textbook.ID}&order=UNITPART&order=SEQNUM`;
+    const url = `${this.baseUrlAPI}VUNITWORDS?filter=TEXTBOOKID,eq,${textbook.ID}&order=UNITPART&order=SEQNUM`;
     const result = await this.httpGet<MUnitWords>(url);
     const result2 = result.records.map(value => Object.assign(new MUnitWord(), value));
     result2.forEach(o => o.textbook = textbook);
     return result2;
   }
 
-  async getDataByLang(langid: number, textbooks: MTextbook[], filter: string, filterType: number, textbookFilter: number): Promise<MUnitWords>;
-  async getDataByLang(langid: number, textbooks: MTextbook[], filter: string, filterType: number, textbookFilter: number, page: number, rows: number): Promise<MUnitWords>;
-  async getDataByLang(langid: number, textbooks: MTextbook[], filter: string, filterType: number, textbookFilter: number, page?: number, rows?: number): Promise<MUnitWords> {
+  async getDataByLang(langid: number, textbooks: MTextbook[], filter: string, filterScope: string, textbookFilter: number): Promise<MUnitWords>;
+  async getDataByLang(langid: number, textbooks: MTextbook[], filter: string, filterScope: string, textbookFilter: number, page: number, rows: number): Promise<MUnitWords>;
+  async getDataByLang(langid: number, textbooks: MTextbook[], filter: string, filterScope: string, textbookFilter: number, page?: number, rows?: number): Promise<MUnitWords> {
     let url = `${this.baseUrlAPI}VUNITWORDS?filter=LANGID,eq,${langid}&order=TEXTBOOKID&order=UNIT&order=PART&order=SEQNUM`;
-    if (filterType !== 0 && filter)
-      url += `&filter=${filterType === 1 ? 'WORD' : 'NOTE'},cs,${encodeURIComponent(filter)}`;
+    if (filter)
+      url += `&filter=${filterScope},cs,${encodeURIComponent(filter)}`;
     if (textbookFilter !== 0)
       url += `&filter=TEXTBOOKID,eq,${textbookFilter}`;
     if (page !== undefined && rows !== undefined)
