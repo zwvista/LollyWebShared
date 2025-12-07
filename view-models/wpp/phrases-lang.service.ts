@@ -10,8 +10,7 @@ export class PhrasesLangService {
   langPhrases: MLangPhrase[] = [];
   langPhraseCount = 0;
   filter = '';
-  filterScope = SettingsService.scopePhraseFilters[0];
-  scopeFilters = SettingsService.scopePhraseFilters;
+  filterType = 0;
   page = 1;
   rows = 0;
 
@@ -22,7 +21,7 @@ export class PhrasesLangService {
 
   async getData() {
     await this.appService.getData();
-    const res = await this.langPhraseService.getDataByLang(this.settingsService.selectedLang.ID, this.filter, this.filterScope, this.page, this.rows);
+    const res = await this.langPhraseService.getDataByLang(this.settingsService.selectedLang.ID, this.filter, this.filterType, this.page, this.rows);
     this.langPhrases = res.records;
     this.langPhraseCount = res.results;
   }

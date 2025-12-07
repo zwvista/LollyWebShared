@@ -167,9 +167,9 @@ export class SettingsService {
 
   settingsListener: SettingsListener | null = null;
 
-  static readonly scopeWordFilters = ['WORD', 'NOTE'];
-  static readonly scopePhraseFilters = ['PHRASE', 'TRANSLATION'];
-  static readonly scopePatternFilters = ['PATTERN', 'TAGS'];
+  wordFilterTypes = ['Word', 'Note'].map((v, i) => new MSelectItem(i, v));
+  phraseFilterTypes = ['Phrase', 'Translation'].map((v, i) => new MSelectItem(i, v));
+  patternFilterTypes = ['Pattern', 'Tags'].map((v, i) => new MSelectItem(i, v));
 
   constructor(private langService: LanguageService,
               private usMappingService: UsMappingService,

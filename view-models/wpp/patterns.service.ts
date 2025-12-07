@@ -10,8 +10,7 @@ export class PatternsService {
   patterns: MPattern[] = [];
   patternCount = 0;
   filter = '';
-  filterScope = SettingsService.scopePatternFilters[0];
-  scopeFilters = SettingsService.scopePatternFilters;
+  filterType = 0;
   page = 1;
   rows = 0;
 
@@ -22,7 +21,7 @@ export class PatternsService {
 
   async getData() {
     await this.appService.getData();
-    const res = await this.patternService.getDataByLang(this.settingsService.selectedLang.ID, this.filter, this.filterScope, this.page, this.rows);
+    const res = await this.patternService.getDataByLang(this.settingsService.selectedLang.ID, this.filter, this.filterType, this.page, this.rows);
     this.patterns = res.records;
     this.patternCount = res.results;
   }

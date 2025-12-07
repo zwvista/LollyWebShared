@@ -8,10 +8,10 @@ import { singleton } from 'tsyringe';
 @singleton()
 export class UnitPhraseService extends BaseService {
 
-  async getDataByTextbookUnitPart(textbook: MTextbook, unitPartFrom: number, unitPartTo: number, filter: string, filterScope: string): Promise<MUnitPhrase[]> {
+  async getDataByTextbookUnitPart(textbook: MTextbook, unitPartFrom: number, unitPartTo: number, filter: string, filterType: number): Promise<MUnitPhrase[]> {
     let url = `${this.baseUrlAPI}VUNITPHRASES?filter=TEXTBOOKID,eq,${textbook.ID}&filter=UNITPART,bt,${unitPartFrom},${unitPartTo}&order=UNITPART&order=SEQNUM`;
     if (filter)
-      url += `&filter=${filterScope},cs,${encodeURIComponent(filter)}`;
+      url += `&filter=${filterType === 0 ? 'PHRASE' : 'TRANSLATION'},cs,${encodeURIComponent(filter)}`;
     const result = await this.httpGet<MUnitPhrases>(url);
     const result2 = result.records.map(value => Object.assign(new MUnitPhrase(), value));
     result2.forEach(o => o.textbook = textbook);
@@ -26,12 +26,12 @@ export class UnitPhraseService extends BaseService {
     return result2;
   }
 
-  async getDataByLang(langid: number, textbooks: MTextbook[], filter: string, filterScope: string, textbookFilter: number): Promise<MUnitPhrases>;
-  async getDataByLang(langid: number, textbooks: MTextbook[], filter: string, filterScope: string, textbookFilter: number, page: number, rows: number): Promise<MUnitPhrases>;
-  async getDataByLang(langid: number, textbooks: MTextbook[], filter: string, filterScope: string, textbookFilter: number, page?: number, rows?: number): Promise<MUnitPhrases> {
+  async getDataByLang(langid: number, textbooks: MTextbook[], filter: string, filterType: number, textbookFilter: number): Promise<MUnitPhrases>;
+  async getDataByLang(langid: number, textbooks: MTextbook[], filter: string, filterType: number, textbookFilter: number, page: number, rows: number): Promise<MUnitPhrases>;
+  async getDataByLang(langid: number, textbooks: MTextbook[], filter: string, filterType: number, textbookFilter: number, page?: number, rows?: number): Promise<MUnitPhrases> {
     let url = `${this.baseUrlAPI}VUNITPHRASES?filter=LANGID,eq,${langid}&order=TEXTBOOKID&order=UNIT&order=PART&order=SEQNUM`;
-    if (filter)
-      url += `&filter=${filterScope},cs,${encodeURIComponent(filter)}`;
+    if (filterType !== 0 && filter)
+      url += `&filter=${filterType === 1 ? 'PHRASE' : 'TRANSLATION'},cs,${encodeURIComponent(filter)}`;
     if (textbookFilter !== 0)
       url += `&filter=TEXTBOOKID,eq,${textbookFilter}`;
     if (page !== undefined && rows !== undefined)

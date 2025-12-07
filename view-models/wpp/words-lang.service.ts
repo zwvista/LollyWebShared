@@ -11,8 +11,7 @@ export class WordsLangService {
   langWords: MLangWord[] = [];
   langWordsCount = 0;
   filter = '';
-  filterScope = SettingsService.scopeWordFilters[0];
-  scopeFilters = SettingsService.scopeWordFilters;
+  filterType = 0;
   page = 1;
   rows = 0;
 
@@ -24,7 +23,7 @@ export class WordsLangService {
 
   async getData(): Promise<void> {
     await this.appService.getData();
-    const res =　await this.langWordService.getDataByLang(this.settingsService.selectedLang.ID, this.filter, this.filterScope, this.page, this.rows);
+    const res =　await this.langWordService.getDataByLang(this.settingsService.selectedLang.ID, this.filter, this.filterType, this.page, this.rows);
     this.langWords = res.records;
     this.langWordsCount = res.results;
   }

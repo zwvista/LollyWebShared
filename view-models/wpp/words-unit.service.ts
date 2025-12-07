@@ -14,8 +14,7 @@ export class WordsUnitService {
   textbookWordCount = 0;
   newWord = '';
   filter = '';
-  filterScope = SettingsService.scopeWordFilters[0];
-  scopeFilters = SettingsService.scopeWordFilters;
+  filterType = 0;
   textbookFilter = 0;
   page = 1;
   rows = 0;
@@ -30,13 +29,13 @@ export class WordsUnitService {
   async getDataInTextbook(): Promise<void> {
     await this.appService.getData();
     this.unitWords = await this.unitWordService.getDataByTextbookUnitPart(this.settingsService.selectedTextbook,
-        this.settingsService.USUNITPARTFROM, this.settingsService.USUNITPARTTO, this.filter, this.filterScope);
+        this.settingsService.USUNITPARTFROM, this.settingsService.USUNITPARTTO, this.filter, this.filterType);
   }
 
   async getDataInLang() {
     await this.appService.getData();
     const res = await this.unitWordService.getDataByLang(this.settingsService.selectedLang.ID,
-        this.settingsService.textbooks, this.filter, this.filterScope, this.textbookFilter, this.page, this.rows);
+        this.settingsService.textbooks, this.filter, this.filterType, this.textbookFilter, this.page, this.rows);
     this.textbookWords = res.records;
     this.textbookWordCount = res.results;
   }
