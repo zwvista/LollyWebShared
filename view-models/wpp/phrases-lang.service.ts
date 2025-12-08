@@ -21,6 +21,7 @@ export class PhrasesLangService {
 
   async getData() {
     await this.appService.getData();
+    this.rows = this.settingsService.USROWSPERPAGE;
     const res = await this.langPhraseService.getDataByLang(this.settingsService.selectedLang.ID, this.filter, this.filterType, this.page, this.rows);
     this.langPhrases = res.records;
     this.langPhraseCount = res.results;

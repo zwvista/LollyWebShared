@@ -32,6 +32,7 @@ export class PhrasesUnitService {
 
   async getDataInLang() {
     await this.appService.getData();
+    this.rows = this.settingsService.USROWSPERPAGE;
     const res = await this.unitPhraseService.getDataByLang(this.settingsService.selectedLang.ID,
         this.settingsService.textbooks, this.filter, this.filterType, this.textbookFilter, this.page, this.rows);
     this.textbookPhrases = res.records;
